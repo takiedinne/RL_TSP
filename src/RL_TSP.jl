@@ -1,19 +1,38 @@
 module RL_TSP
 
 using DelimitedFiles
+using Plots
+using Random
+
+# Set the seed value
+seed_value = 123
+
+# Set the seed
+Random.seed!(seed_value)
 
 include("TSP.jl")
-include("RL_methods.jl")
+include("explorationMethods.jl")
+include("learningRateMethods.jl")
+include("QLearning.jl")
+include("experiments.jl")
 
-tsp_id = 4
+export
+    TSP, 
+    Qlearner,
+    get_all_states,
+    set_final_reward,
 
-lr::learning_rate=constant_learning_rate(0.9)
-ef::RLExplorationMethod=ϵ_greedy_exploration_method()
-iterenary = solve(tsp_id, exploration_function=ef, α=lr, max_episodes=1000000)
-
-println(iterenary)
-
-path = copy(iterenary[1])
-sort!(path)
-println(path)
-end # module RL_TSP
+    simple_exploration_method,
+    ϵ_greedy_exploration_method,
+    roulette_wheel,
+    # learning learningRateMethods
+    constant_learning_rate,
+    exponetial_decreasing_learning_rate,
+    linear_decreasing_learning_rate,
+    #experiments
+    solve,
+    alpha_influence,
+    fixed_epsilon_influence,
+    epsilon_greedy_phase_nbr_Influence,
+    compare_exploration_methods
+end 
